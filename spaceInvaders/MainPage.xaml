@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="spaceInvaders.MainPage"
+    x:Name="page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:spaceInvaders"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="grid">
+        <Canvas x:Name="c" HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding ElementName=grid, Path=ActualWidth}" Height="{Binding ElementName=grid, Path=ActualHeight}" Background="Black">
+            <TextBlock x:Name="textBlock" Canvas.Left="10" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="20" Foreground="White"/>
+            <Image x:Name="player" Canvas.Left="0" Canvas.Top="20"/>            
+            <Image x:Name="image" Canvas.Left="0" Canvas.Top="0" Source="Assets/sprites/player.png" Height="32"/>
+        </Canvas>
+    </Grid>
+</Page>
