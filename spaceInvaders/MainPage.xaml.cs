@@ -1,94 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Diagnostics;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Diagnostics;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Media.Imaging;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace spaceInvaders
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
-        int x;
-        DispatcherTimer dispatcherTimer;
-        Boolean playerIsMovingLeft = false;
-
-        //sprites
-        private BitmapImage alien1A;
-        private BitmapImage alien1B;
+        private DispatcherTimer dispatcherTimer;
+        private Player player;
+        private bool playerIsMovingLeft;
+        private bool playerIsMovingRight;
 
         public MainPage()
         {
-            x = 0;
-            this.InitializeComponent();
+            InitializeComponent();            
+    
+            player = new Player();
+            canvas.Children.Add(player.turret);
+            playerIsMovingLeft = playerIsMovingRight = false;
 
-            alien1A = new BitmapImage(new Uri("ms-appx:///Assets/sprites/alien-1-1.png"));
-            alien1B = new BitmapImage(new Uri("ms-appx:///Assets/sprites/alien-1-2.png"));
-            player.Source = alien1A;
-
-            Canvas.SetTop(image, Window.Current.Bounds.Height - (image.Height + 20));
-            Canvas.SetLeft(image, Window.Current.Bounds.Width / 2);
-
-            //run game loop
             dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            dispatcherTimer.Tick += Game;
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(15);
             dispatcherTimer.Start();
+
+            Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
+            Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
         }
 
-        private void DispatcherTimer_Tick(object sender, object e)
+        private void Game(object sender, object e)
         {
-            textBlock.Text = "x: " + x;
-            //Debug.WriteLine("sw");
+            if (playerIsMovingLeft) player.moveLeft();
+            if (playerIsMovingRight) player.moveRight();
+        }
 
-            if (x > 0 && x % 60 == 0)
+        void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
+        {
+            if(e.VirtualKey == Windows.System.VirtualKey.Left)
             {
-                if (player.Source == alien1A)
-                {
-                    player.Source = alien1B;
-                }
-                else
-                {
-                    player.Source = alien1A;
-                }
+                playerIsMovingRight = false;
+                playerIsMovingLeft = true;
+            } else if(e.VirtualKey == Windows.System.VirtualKey.Right)
+            {
+                playerIsMovingLeft = false;
+                playerIsMovingRight = true;
             }
+        }
 
-            if (playerIsMovingLeft)
+        void CoreWindow_KeyUp(CoreWindow sender, KeyEventArgs e)
+        {
+            if(e.VirtualKey == Windows.System.VirtualKey.Left || e.VirtualKey == Windows.System.VirtualKey.Right)
             {
-                if (Canvas.GetLeft(player) <= 0)
-                {
-                    playerIsMovingLeft = false;
-                    Canvas.SetTop(player, Canvas.GetTop(player) + 20);
-                }
-
-                Canvas.SetLeft(player, x);
-                x = x - 2;
-            }
-            else
-            {
-                if (Canvas.GetLeft(player) >= (c.ActualWidth - player.ActualWidth))
-                {
-                    playerIsMovingLeft = true;
-                    Canvas.SetTop(player, Canvas.GetTop(player) + 20);
-                }
-
-                Canvas.SetLeft(player, x);
-                x = x + 2;
+                playerIsMovingLeft = playerIsMovingRight = false;
             }
         }
     }

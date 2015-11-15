@@ -24,9 +24,6 @@
     <AppxPackagedFile Include="C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\bin\x86\Debug\Core\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\bin\x86\Debug\Core\Assets\ship.png">
-      <PackagePath>Assets\ship.png</PackagePath>
-    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\bin\x86\Debug\Core\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>

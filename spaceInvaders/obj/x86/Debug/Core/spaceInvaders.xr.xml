@@ -20,24 +20,10 @@
       <RootProperty Name="Width" />
       <RootProperty Name="Height" />
       <RootProperty Name="Background" />
-      <RootProperty Name="Children" />
-      <RootMethod Name="GetLeft" />
-      <RootMethod Name="SetLeft" />
-      <RootMethod Name="GetTop" />
-      <RootMethod Name="SetTop" />
     </RootType>
     <RootType FullName="Windows.UI.Xaml.Data.Binding">
       <RootProperty Name="ElementName" />
       <RootProperty Name="Path" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.TextBlock">
-      <RootProperty Name="TextWrapping" />
-      <RootProperty Name="Text" />
-      <RootProperty Name="Foreground" />
-    </RootType>
-    <RootType FullName="Windows.UI.Xaml.Controls.Image">
-      <RootProperty Name="Source" />
-      <RootProperty Name="Height" />
     </RootType>
     <RootType FullName="spaceInvaders.MainPage" />
   </Roots.RootTypes>
