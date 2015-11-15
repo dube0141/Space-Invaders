@@ -20,8 +20,8 @@ namespace spaceInvaders
         public Player()
         {
             turret = new Image();
-            turret.Width = 90;
-            turret.Height = 34;
+            turret.Width = 52;
+            turret.Height = 32;
             turret.Source = new BitmapImage(new Uri("ms-appx:///Assets/sprites/player.png"));
 
             xPos = Window.Current.Bounds.Width / 2;
@@ -33,13 +33,13 @@ namespace spaceInvaders
 
         public void moveRight()
         {
-            xPos += 2;
+            xPos += 4;
             Canvas.SetLeft(turret, xPos);
         }
 
         public void moveLeft()
         {
-            xPos += -2;
+            xPos += -4;
             Canvas.SetLeft(turret, xPos);
         }
     }

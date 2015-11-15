@@ -3,6 +3,8 @@ using System.Diagnostics;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
 
 namespace spaceInvaders
 {
@@ -16,7 +18,7 @@ namespace spaceInvaders
         public MainPage()
         {
             InitializeComponent();            
-    
+
             player = new Player();
             canvas.Children.Add(player.turret);
             playerIsMovingLeft = playerIsMovingRight = false;
@@ -28,6 +30,22 @@ namespace spaceInvaders
 
             Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
+
+            //Draws alien grid
+            //Will eventually be moved inside a method or class
+            for (int y = 0; y < 10; y++)
+            {
+                for(int x = 0; x < 5; x++)
+                {
+                    Image invader = new Image();
+                    invader.Width = 32;
+                    invader.Height = 32;
+                    invader.Source = new BitmapImage(new Uri("ms-appx:///Assets/sprites/alien-1-1.png")); ;
+                    canvas.Children.Add(invader);
+                    Canvas.SetLeft(invader, 60 * y);
+                    Canvas.SetTop(invader, 60 * x);
+                }
+            }
         }
 
         private void Game(object sender, object e)
@@ -51,9 +69,12 @@ namespace spaceInvaders
 
         void CoreWindow_KeyUp(CoreWindow sender, KeyEventArgs e)
         {
-            if(e.VirtualKey == Windows.System.VirtualKey.Left || e.VirtualKey == Windows.System.VirtualKey.Right)
+            if (e.VirtualKey == Windows.System.VirtualKey.Left)
             {
-                playerIsMovingLeft = playerIsMovingRight = false;
+                playerIsMovingLeft = false;
+            } else if (e.VirtualKey == Windows.System.VirtualKey.Right)
+            {
+                playerIsMovingRight = false;
             }
         }
     }
