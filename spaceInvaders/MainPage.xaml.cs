@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -11,9 +12,16 @@ namespace spaceInvaders
     public sealed partial class MainPage : Page
     {
         private DispatcherTimer dispatcherTimer;
+
         private Player player;
+        private Invaders invaders;
+
+        private ArrayList invaderGrid;
+
         private bool playerIsMovingLeft;
         private bool playerIsMovingRight;
+
+        int count = 0;
 
         public MainPage()
         {
@@ -23,35 +31,31 @@ namespace spaceInvaders
             canvas.Children.Add(player.turret);
             playerIsMovingLeft = playerIsMovingRight = false;
 
+            invaders = new Invaders();
+            invaderGrid = invaders.invaderGrid;            
+
+            foreach (Image i in invaderGrid)
+            {
+                canvas.Children.Add(i);
+            }
+
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Game;
-            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(15);
+            dispatcherTimer.Interval = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 60);
             dispatcherTimer.Start();
 
             Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             Window.Current.CoreWindow.KeyUp += CoreWindow_KeyUp;
-
-            //Draws alien grid
-            //Will eventually be moved inside a method or class
-            for (int y = 0; y < 10; y++)
-            {
-                for(int x = 0; x < 5; x++)
-                {
-                    Image invader = new Image();
-                    invader.Width = 32;
-                    invader.Height = 32;
-                    invader.Source = new BitmapImage(new Uri("ms-appx:///Assets/sprites/alien-1-1.png")); ;
-                    canvas.Children.Add(invader);
-                    Canvas.SetLeft(invader, 60 * y);
-                    Canvas.SetTop(invader, 60 * x);
-                }
-            }
         }
 
         private void Game(object sender, object e)
         {
             if (playerIsMovingLeft) player.moveLeft();
             if (playerIsMovingRight) player.moveRight();
+            if (count % 60 == 1) invaders.toggleSprite();
+            invaders.moveRight();
+
+            count++;
         }
 
         void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
@@ -64,6 +68,9 @@ namespace spaceInvaders
             {
                 playerIsMovingLeft = false;
                 playerIsMovingRight = true;
+            } else if(e.VirtualKey == Windows.System.VirtualKey.Space)
+            {
+                //player.shoot();
             }
         }
 

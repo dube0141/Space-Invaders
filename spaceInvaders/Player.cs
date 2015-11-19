@@ -13,6 +13,7 @@ namespace spaceInvaders
     class Player
     {
         public Image turret;
+        private Image bullet;
 
         private double xPos;
         private double yPos;
