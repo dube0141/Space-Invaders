@@ -12,24 +12,28 @@ namespace spaceInvaders
 {
     class Player
     {
-        public Image turret;
-        private Image bullet;
+        private Image turret;
+        private BitmapImage turretBitmapImage = new BitmapImage(new Uri("ms-appx:///Assets/sprites/player.png"));
 
         private double xPos;
         private double yPos;
-        
-        public Player()
+
+        public Player(double sizeRatio)
         {
             turret = new Image();
-            turret.Width = 52;
-            turret.Height = 32;
-            turret.Source = new BitmapImage(new Uri("ms-appx:///Assets/sprites/player.png"));
+            turretBitmapImage.ImageOpened += (sender, e) =>
+            {
+                turret.Width = turretBitmapImage.PixelWidth * sizeRatio;
+                turret.Height = turretBitmapImage.PixelHeight * sizeRatio;
 
-            xPos = Window.Current.Bounds.Width / 2;
-            yPos = Window.Current.Bounds.Height - (turret.Height + 20);
+                xPos = Window.Current.Bounds.Width / 2;
+                yPos = Window.Current.Bounds.Height - (turret.Height * 2);
 
-            Canvas.SetLeft(turret, xPos);
-            Canvas.SetTop(turret, yPos);
+                Canvas.SetLeft(turret, xPos);
+                Canvas.SetTop(turret, yPos);
+            };
+
+            turret.Source = turretBitmapImage;
         }
 
         public void moveRight()
@@ -42,6 +46,11 @@ namespace spaceInvaders
         {
             xPos += -4;
             Canvas.SetLeft(turret, xPos);
+        }
+
+        public Image getPlayer()
+        {
+            return turret;
         }
     }
 }

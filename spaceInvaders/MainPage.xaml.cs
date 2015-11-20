@@ -21,18 +21,21 @@ namespace spaceInvaders
         private bool playerIsMovingLeft;
         private bool playerIsMovingRight;
 
-        int count = 0;
+        private bool invadersAreMovingLeft;
+
+        private int count = 0;
+        private double sizeRatio = 0.80;
 
         public MainPage()
         {
-            InitializeComponent();            
+            InitializeComponent();
 
-            player = new Player();
-            canvas.Children.Add(player.turret);
-            playerIsMovingLeft = playerIsMovingRight = false;
+            player = new Player(sizeRatio);
+            canvas.Children.Add(player.getPlayer());
+            playerIsMovingLeft = playerIsMovingRight = invadersAreMovingLeft = false;
 
-            invaders = new Invaders();
-            invaderGrid = invaders.invaderGrid;            
+            invaders = new Invaders(sizeRatio);
+            invaderGrid = invaders.invaderGrid;
 
             foreach (Image i in invaderGrid)
             {
@@ -52,23 +55,43 @@ namespace spaceInvaders
         {
             if (playerIsMovingLeft) player.moveLeft();
             if (playerIsMovingRight) player.moveRight();
-            if (count % 60 == 1) invaders.toggleSprite();
-            invaders.moveRight();
+            invaders.toggleSprite(count);
+
+            if (invaders.collision())
+            {
+                invaders.moveDown();
+
+                if (invadersAreMovingLeft)
+                {
+                    invadersAreMovingLeft = false;
+                    invaders.moveRight();
+                }
+                else
+                {
+                    invadersAreMovingLeft = true;
+                    invaders.moveLeft();
+                }
+            }
+
+            if (invadersAreMovingLeft) invaders.moveLeft();
+            else invaders.moveRight();
 
             count++;
         }
 
         void CoreWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
         {
-            if(e.VirtualKey == Windows.System.VirtualKey.Left)
+            if (e.VirtualKey == Windows.System.VirtualKey.Left)
             {
                 playerIsMovingRight = false;
                 playerIsMovingLeft = true;
-            } else if(e.VirtualKey == Windows.System.VirtualKey.Right)
+            }
+            else if (e.VirtualKey == Windows.System.VirtualKey.Right)
             {
                 playerIsMovingLeft = false;
                 playerIsMovingRight = true;
-            } else if(e.VirtualKey == Windows.System.VirtualKey.Space)
+            }
+            else if (e.VirtualKey == Windows.System.VirtualKey.Space)
             {
                 //player.shoot();
             }
@@ -79,7 +102,8 @@ namespace spaceInvaders
             if (e.VirtualKey == Windows.System.VirtualKey.Left)
             {
                 playerIsMovingLeft = false;
-            } else if (e.VirtualKey == Windows.System.VirtualKey.Right)
+            }
+            else if (e.VirtualKey == Windows.System.VirtualKey.Right)
             {
                 playerIsMovingRight = false;
             }

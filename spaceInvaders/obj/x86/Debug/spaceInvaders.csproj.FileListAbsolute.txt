@@ -467,3 +467,4 @@ C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvade
 C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\obj\x86\Debug\Core\spaceInvaders.xr.xml
 C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\obj\x86\Debug\Core\WinMetadata\Windows.winmd
 C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\obj\x86\Debug\Core\resources.pri
+C:\Users\Gabriel\Documents\Visual Studio 2015\Projects\spaceInvaders\spaceInvaders\obj\x86\Debug\spaceInvaders.csprojResolveAssemblyReference.cache

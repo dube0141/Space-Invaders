@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
 
 namespace spaceInvaders
 {
@@ -17,39 +18,37 @@ namespace spaceInvaders
 
         private readonly Uri alien1AUri = new Uri("ms-appx:///Assets/sprites/alien-1-1.png");
         private readonly Uri alien1BUri = new Uri("ms-appx:///Assets/sprites/alien-1-2.png");
-        private readonly Uri alien2AUri = new Uri("ms-appx:///Assets/sprites/alien-2-1.png");
-        private readonly Uri alien2BUri = new Uri("ms-appx:///Assets/sprites/alien-2-2.png");
-        private readonly Uri alien3AUri = new Uri("ms-appx:///Assets/sprites/alien-3-1.png");
-        private readonly Uri alien3BUri = new Uri("ms-appx:///Assets/sprites/alien-3-2.png");
 
         private BitmapImage alien1A;
         private BitmapImage alien1B;
-        private BitmapImage alien2A;
-        private BitmapImage alien2B;
-        private BitmapImage alien3A;
 
-        public Invaders()
+        double speed = 1;
+
+        public Invaders(double sizeRatio)
         {
             alien1A = new BitmapImage(alien1AUri);
             alien1B = new BitmapImage(alien1BUri);
 
             invaderGrid = new ArrayList();
-            
-            for (int y = 0; y < 1; y++)
+
+            for (int r = 1; r < 10; r++)
             {
-                Image invader = new Image();
-
-                alien1A.ImageOpened += (sender, e) =>
+                for (int c = 1; c < 5; c++)
                 {
-                    invader.Width = alien1A.PixelWidth;
-                    invader.Height = alien1A.PixelHeight;
-                };
+                    Image invader = new Image();
 
-                Canvas.SetLeft(invader, 60 * y);
-                Canvas.SetTop(invader, 60);
-                invaderGrid.Add(invader);
+                    alien1A.ImageOpened += (sender, e) =>
+                    {
+                        invader.Width = alien1A.PixelWidth * sizeRatio;
+                        invader.Height = alien1A.PixelHeight * sizeRatio;
+                    };
 
-                invader.Source = alien1A;
+                    Canvas.SetLeft(invader, 60 * r);
+                    Canvas.SetTop(invader, 40 * c);
+
+                    invaderGrid.Add(invader);
+                    invader.Source = alien1A;
+                }
             }
         }
 
@@ -57,7 +56,7 @@ namespace spaceInvaders
         {
             foreach (Image i in invaderGrid)
             {
-                Canvas.SetLeft(i, Canvas.GetLeft(i) + 1);
+                Canvas.SetLeft(i, Canvas.GetLeft(i) - speed);
             }
         }
 
@@ -65,7 +64,7 @@ namespace spaceInvaders
         {
             foreach (Image i in invaderGrid)
             {
-                Canvas.SetLeft(i, Canvas.GetLeft(i) + 1);
+                Canvas.SetLeft(i, Canvas.GetLeft(i) + speed);
             }
         }
 
@@ -73,14 +72,32 @@ namespace spaceInvaders
         {
             foreach (Image i in invaderGrid)
             {
-                Canvas.SetTop(i, Canvas.GetTop(i) + 20);
+                Canvas.SetTop(i, Canvas.GetTop(i) + i.Height);
+            }
+
+            speed += 0.25;
+        }
+
+        public void toggleSprite(double c)
+        {
+            if (c % (30 / Math.Round(speed)) == 1)
+            {
+                if (alien1A.UriSource == alien1AUri) alien1A.UriSource = alien1BUri;
+                else alien1A.UriSource = alien1AUri;
             }
         }
 
-        public void toggleSprite()
+        public bool collision()
         {
-            if (alien1A.UriSource == alien1AUri) alien1A.UriSource = alien1BUri;
-            else alien1A.UriSource = alien1AUri;
+            foreach (Image i in invaderGrid)
+            {
+                if (Canvas.GetLeft(i) <= 0 || Canvas.GetLeft(i) >= Window.Current.Bounds.Width - i.Width)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
